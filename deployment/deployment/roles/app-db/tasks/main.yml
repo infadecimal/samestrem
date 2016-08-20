@@ -1,0 +1,24 @@
+---
+- name: Install supporting packages
+  sudo: yes
+  apt: name={{item}} state=present
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: Create MySQL DB
+  mysql_db: name={{item.name}}
+  with_items: samestrem.db.values()
+  register: dbs_created
+  sudo: yes
+
+- name: Generate MySQL user
+  mysql_user:
+    user={{item.user}}
+    password={{item.password}}
+    priv={{item.name}}.*:ALL
+    host=%
+    append_privs=true
+    state=present
+  with_items: samestrem.db.values()
+  sudo: yes

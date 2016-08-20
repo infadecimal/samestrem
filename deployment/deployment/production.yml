@@ -1,0 +1,6 @@
+- name: Install a full environment
+  hosts: samestrem-server
+  roles:
+    - all
+    - app-db
+    - api

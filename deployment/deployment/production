@@ -1,0 +1,8 @@
+[localhost]
+localhost ansible_connection=local
+
+[samestrem-server]
+76.74.178.225 internal_ip=127.0.0.1
+
+[production:children]
+samestrem-servers

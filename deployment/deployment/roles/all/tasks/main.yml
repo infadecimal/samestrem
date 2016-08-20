@@ -1,0 +1,42 @@
+---
+- name: Install packages
+  apt: update_cache=yes pkg={{item}} state=present cache_valid_time=86400
+  sudo: yes
+  with_items: global_packages
+
+- name: Ensure resolvconf is gone, because it's evil
+  apt: pkg=resolvconf state=absent
+  sudo: yes
+
+- name: Add admin users
+  user: comment="{{item.name}}" groups=sudo home=/home/{{item.login}} name={{item.login}} shell=/bin/bash password={{item.password}} update_password=on_create
+  sudo: yes
+  with_items: admins
+  when: admins is defined
+  tags:
+    - users
+
+- name: Add authorized keys
+  authorized_key: user={{item.user}} key="{{lookup('file', inventory_dir + '/keys/' + item.key)}}"
+  sudo: yes
+  with_items: admin_keys
+  when: admins is defined
+  tags:
+    - users
+
+- name: Update hosts
+  copy: src=hosts dest=/etc/hosts
+  sudo: yes
+
+- name: Add rows to Host file
+  lineinfile: dest=/etc/hosts line="{{ item }}" state=present
+  sudo: yes
+  with_items:
+    - "127.0.0.1 vagrant.internal"
+    - "127.0.0.1 samestrem.vagrant.internal"
+  when: is_vagrant is defined and is_vagrant
+
+- name: Allow sql dbs to be loaded from outside vagrant
+  lineinfile: dest=/etc/mysql/my.cnf regexp="^bind-address" line="bind-address=0.0.0.0" state=present
+  sudo: yes
+  when: is_vagrant is defined and is_vagrant

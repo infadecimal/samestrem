@@ -1,0 +1,17 @@
+COMMON: &common
+  SECRET_KEY: insecure
+  LOG_FILE: /var/log/uwsgi/app/samestrem.log
+
+DEVELOPMENT: &development
+  <<: *common
+  DEBUG: False
+
+STAGING: &staging
+  <<: *common
+  SECRET_KEY: sortasecure
+  DEBUG: False
+
+PRODUCTION: &production
+  <<: *common
+  SECRET_KEY: shouldbereallysecureatsomepoint
+  DEBUG: False

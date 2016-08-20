@@ -1,0 +1,8 @@
+[localhost]
+localhost ansible_connection=local
+
+[samestrem-server]
+192.168.111.222 server_id=1 internal_ip=127.0.0.1
+
+[vagrant:children]
+samestrem-server
