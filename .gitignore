@@ -1,3 +1,5 @@
 /deployment/deployment/group_vars/production
 /deployment/.vagrant
+.DS_STORE
+*/.DS_STORE
 

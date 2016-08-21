@@ -1,8 +1,6 @@
-print "I am right here"
-
 import os
 from flask_extended import Flask
-from flask import jsonify
+from flask import jsonify, render_template, url_for
 import logging
 from logging import FileHandler, Formatter
 
@@ -35,10 +33,21 @@ def index():
     """
     API index endpoint
     """
-    message = "You hit the API index! Excellent!"
-    response = jsonify(message=message)
-    response.status_code = 200
-    return response
+    return render_template('index.html',title="Home")
+
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                     endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
 
 
 if __name__ == '__main__':
