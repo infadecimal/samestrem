@@ -50,3 +50,4 @@ global_packages:
   - libredis-perl
   - ipmitool
   - ntp
+  - node-less

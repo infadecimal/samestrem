@@ -110,3 +110,10 @@
     - virtualenv
   notify:
     - Restart uWSGI
+
+- name: Add lessc to bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="{{ item }}" state=present
+  sudo: yes
+  with_items:
+    - "alias lc='lessc {{samestrem.install_dir}}static/styles/site.less > {{samestrem.install_dir}}static/styles/site.css'"
+  when: is_vagrant is defined and is_vagrant
