@@ -9,5 +9,9 @@ import web
 
 urlpatterns = [
     url(r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
-    url(r'^home/', include('home.urls'))
+    url(r'^$', include('home.urls')),
+    url(r'^code/', include('programming.urls')),
+    url(r'^dance/', include('dance.urls')),
+    url(r'^about/', include('about.urls')),
+    url(r'^me/', include('me.urls'))
 ]
