@@ -14,17 +14,18 @@
     }
 
     .quad-content {
+        -webkit-transition: width .5s, height .5s, z-index .5s;
+        transition: width .5s, height .5s, z-index .5s;
         width: @menu_width/2;
         height: @menu_height/2;
         position: absolute;
-        z-index: 100;
         overflow: hidden;
-        z-index: 5000;
+        z-index: 100;
 
         &:hover {
             z-index: 9999;
-            -webkit-transition: width .5s, height .5s;
-            transition: width .5s, height .5s;
+            -webkit-transition: width .5s, height .5s, z-index .5s;
+            transition: width .5s, height .5s, z-index .5s;
             width: @menu_width;
             height: @menu_height;
         }
@@ -38,7 +39,12 @@
         vertical-align: middle;
         line-height: @menu_height/2;
         font-size: xx-large;
-        color: white;
+        color: black;
+        .quad-title-text {
+            padding: 5px;
+            background-color: rgba(255, 255, 255, .7);
+            border-radius: 10px;
+        }
     }
 
     .quad-options {
@@ -54,21 +60,34 @@
         vertical-align: middle;
         .quad-list-item {
             position: absolute;
-            padding: 20px;
-
+            width: 100%;
             &.top-down {
-                top: 0;
+                top: 50px;
             }
             &.bottom-up {
-                bottom: 0;
+                bottom: 50px;
+            }
+            .item {
+                width: 100%;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: center;
+                span {
+                    padding: 5px;
+                    border-radius: 10px;
+                    border: 1px solid #aaa;
+                    background-color: rgba(255, 255, 255, .9);
+                }
             }
         }
     }
 
-    #one {
+    #code {
         .quad-content {
-            background-image: url(@quadone);
+            /*background-image: url(@codepicture);*/
+            background-image: url(@codepicture);
             background-size: @menu_width @menu_height;
+            background-position: left top;
             top: 0;
             left: 0;
             .quad-title, .quad-options {
@@ -80,10 +99,11 @@
             }
         }
     }
-    #two {
+    #dance {
         .quad-content{
-            background-image: url(@quadtwo);
+            background-image: url(@dancepicture);
             background-size: @menu_width @menu_height;
+            background-position: right top;
             top: 0;
             right: 0;
             .quad-title, .quad-options {
@@ -95,10 +115,12 @@
             }
         }
     }
-    #three {
+    #about {
         .quad-content{
-            background-image: url(@quadthree);
+            /*background-image: url(@aboutpicture);*/
+            background-image: url(@aboutpicture);
             background-size: @menu_width @menu_height;
+            background-position: left bottom;
             bottom: 0;
             left: 0;
             .quad-title, .quad-options {
@@ -110,10 +132,12 @@
             }
         }
     }
-    #four {
+    #logo {
         .quad-content{
-            background-image: url(@quadfour);
+            /*background-image: url(@logo);*/
+            background-image: url(@logo);
             background-size: @menu_width @menu_height;
+            background-position: right bottom;
             bottom: 0;
             right: 0;
             .quad-title, .quad-options {
