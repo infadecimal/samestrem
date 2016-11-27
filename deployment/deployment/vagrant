@@ -1,8 +1,24 @@
 [localhost]
 localhost ansible_connection=local
 
-[samestrem-server]
-192.168.111.222 server_id=1 internal_ip=127.0.0.1
+[app-servers]
+192.168.111.222 internal_ip=127.0.0.1
 
-[vagrant:children]
-samestrem-server
+[app-db-servers]
+192.168.111.222 internal_ip=127.0.0.1
+
+[dev-servers]
+192.168.111.222 internal_ip=127.0.0.1
+
+[lb-servers]
+
+[nagios]
+
+[dev:children]
+app-db-servers
+app-servers
+lb-servers
+dev-servers
+
+[loc:children]
+localhost

@@ -1,0 +1,16 @@
+---
+- name: Install haproxy 1.5 repo
+  apt_repository: repo='ppa:vbernat/haproxy-1.5' validate_certs=no
+  sudo: yes
+
+- name: Install supporting packages
+  sudo: yes
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - haproxy
+
+- name: Add haproxy config
+  template: src=haproxy.cfg dest=/etc/haproxy/haproxy.cfg
+  sudo: yes
+  notify:
+    - Reload haproxy

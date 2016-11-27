@@ -1,0 +1,32 @@
+div#body-content {
+  width: 800px;
+  margin-right: 0px;
+  margin-left: 0px;
+  color: blue;
+}
+div.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+#title-logo {
+  width: 200px;
+  height: 200px;
+  background-image: url("/static/images/samestrem-logo-web-3.png");
+  background-size: cover;
+}
+#title-logo.small {
+  width: 100px;
+  height: 100px;
+}
+#title-logo.medium {
+  width: 200px;
+  height: 200px;
+}
+#title-logo.large {
+  width: 400px;
+  height: 400px;
+}
+
+#something {
+  color: blue;
+}

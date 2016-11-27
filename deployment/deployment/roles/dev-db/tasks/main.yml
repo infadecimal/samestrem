@@ -1,0 +1,14 @@
+---
+- name: Fail if this isn't a Vagrant box
+  fail: msg="I can't detect this as a Vagrant box. Failing in case you're doing something stupid, like trying to install fixtures in production..."
+  when: is_vagrant is not defined or not is_vagrant
+
+- name: Copy fixtures to dev box
+  sudo: yes
+  copy: src="{{fixtures_file}}" dest=/tmp/fixtures.sql.bz2
+  when: dbs_created.changed and fixtures_file is defined
+
+- name: Install fixtures on dev box
+  sudo: yes
+  shell: "bzcat /tmp/fixtures.sql.bz2 | mysql -u root {{samestrem.db.name}}"
+  when: dbs_created.changed and fixtures_file is defined

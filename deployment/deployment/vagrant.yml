@@ -2,10 +2,11 @@
   hosts: localhost
   roles:
     - dev-box
+    - dev-db
 
 - name: Install a full dev environment
-  hosts: samestrem-server
+  hosts: dev-servers
   roles:
     - all
     - app-db
-    - api
+    - app

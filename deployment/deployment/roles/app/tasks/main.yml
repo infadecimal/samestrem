@@ -1,0 +1,164 @@
+---
+- name: Install supporting packages
+  sudo: yes
+  apt: name={{item}} state=present update_cache=yes cache_valid_time=86400
+  with_items:
+    - nginx
+    - uwsgi
+    - uwsgi-plugin-python
+    - build-essential
+    - python-dev
+    - python-setuptools
+    - python-virtualenv
+    - python-pip
+    - git
+    - libmysqlclient-dev
+    - libjpeg-dev
+    - libmemcached-dev
+    - libpcre3-dev
+    - npm
+
+- name: Add app user
+  user: name={{ app_user }} state=present
+  sudo: yes
+  tags:
+    - users
+
+- name: Add app user authorized keys
+  authorized_key: user={{app_user}} key="{{lookup('file', inventory_dir + '/keys/' + item.key)}}"
+  sudo: yes
+  with_items: admin_keys
+  tags:
+    - users
+
+- name: Make static and media dirs
+  remote_user: "{{app_user}}"
+  file: path={{samestrem.install_dir}}/{{item}} mode=0777 state=directory
+  when: is_vagrant is not defined or not is_vagrant
+  with_items:
+    - static_collected
+    - media
+    - media/imports
+  tags:
+    - deploy
+
+- name: Make log dirs
+  remote_user: "{{app_user}}"
+  file: path={{item}} mode=0777 state=directory
+  sudo: yes
+  with_items:
+    - "{{app_log_dir}}"
+    - "{{socket_dir}}"
+  tags:
+    - deploy
+
+- name: Add install directory and virtualenv
+  sudo: yes
+  file: path={{ item }} owner={{ app_user }} group={{ app_user }} state=directory mode=0775
+  with_items:
+    - "{{samestrem.virtualenv}}"
+    - "{{samestrem.install_dir}}"
+
+- name: Add log dir
+  file: path={{samestrem.logfile}} owner={{app_user}} group={{app_user}} state=touch mode=0777
+  sudo: yes
+
+- name: Remove default vhost
+  sudo: yes
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  tags:
+    - nginx
+  notify:
+    - Restart nginx
+
+- name: Install uWSGI endpoint
+  sudo: yes
+  template: src=uwsgi.ini dest=/etc/uwsgi/apps-enabled/{{samestrem.app_name}}.ini owner=root
+  notify:
+    - Restart uWSGI
+
+- name: Install nginx vhosts
+  sudo: yes
+  template: src=nginx.conf dest=/etc/nginx/sites-enabled/{{samestrem.app_name}}.conf owner=root
+  tags:
+    - nginx
+  notify:
+    - Restart nginx
+
+- name: Install nginx key
+  sudo: yes
+  copy: src={{server_key}} dest=/etc/nginx/{{server_key}}
+  when: server_key is defined
+  tags:
+    - nginx
+  notify:
+    - Restart nginx
+
+- name: Install nginx cert
+  sudo: yes
+  copy: src={{server_cert}} dest=/etc/nginx/{{server_cert}}
+  when: server_key is defined
+  tags:
+    - nginx
+  notify:
+    - Restart nginx
+
+- name: Sync code up to web servers
+  remote_user: "{{app_user}}"
+  synchronize: delete=yes src={{samestrem.source_dir}} dest={{samestrem.install_dir}} rsync_opts=--exclude-from={{inventory_dir}}/samestrem-rsync-exclude
+  when: is_vagrant is not defined or not is_vagrant
+  notify:
+    - Restart uWSGI
+  tags:
+    - deploy
+
+- name: Push local_settings.py
+  sudo: yes
+  template: src=local_settings.py dest={{samestrem.local_settings_file}}
+  notify:
+    - Restart uWSGI
+  tags:
+    - deploy
+
+- name: Set up virtualenv
+  remote_user: "{{app_user}}"
+  pip: virtualenv={{samestrem.virtualenv}} requirements={{samestrem.requirements_file}}
+  tags:
+    - virtualenv
+  notify:
+    - Restart uWSGI
+
+- name: Setup Nodeenv
+  command: "{{ samestrem.virtualenv }}/bin/nodeenv --python-virtualenv"
+
+- name: Install lessc
+  command: "npm install -g less"
+
+- name: Sync DB - make migrations
+  remote_user: "{{app_user}}"
+  django_manage: command=makemigrations virtualenv={{samestrem.virtualenv}} app_path={{samestrem.install_dir}}/web
+  tags:
+    - deploy
+    - migrate
+
+- name: Sync DB - migrate
+  remote_user: "{{app_user}}"
+  django_manage: command=migrate virtualenv={{samestrem.virtualenv}} app_path={{samestrem.install_dir}}/web
+  tags:
+    - deploy
+    - migrate
+
+- name: Run migrations
+  remote_user: "{{app_user}}"
+  django_manage: command=migrate virtualenv={{samestrem.virtualenv}} app_path={{samestrem.install_dir}}/web
+  tags:
+    - deploy
+    - migrate
+
+- name: Collect static files
+  remote_user: "{{app_user}}"
+  django_manage: command=collectstatic virtualenv={{samestrem.virtualenv}} app_path="{{samestrem.install_dir}}/web"
+  when: is_vagrant is not defined or not is_vagrant
+  tags:
+    - deploy
+    - collectstatic

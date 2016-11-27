@@ -24,6 +24,14 @@
   tags:
     - users
 
+- name: Update NRPE config
+  template: src=nrpe.cfg dest=/etc/nagios/nrpe_local.cfg
+  sudo: yes
+  tags:
+    - nagios
+  notify:
+    - Reload NRPE
+
 - name: Update hosts
   copy: src=hosts dest=/etc/hosts
   sudo: yes
@@ -40,3 +48,11 @@
   lineinfile: dest=/etc/mysql/my.cnf regexp="^bind-address" line="bind-address=0.0.0.0" state=present
   sudo: yes
   when: is_vagrant is defined and is_vagrant
+
+- name: Copy XCache check script 
+  copy: src=nagios/check_xcache dest=/usr/lib/nagios/plugins/check_xcache mode=0755
+  sudo: yes
+
+- name: Copy Redis check script 
+  copy: src=nagios/check_redis dest=/usr/lib/nagios/plugins/check_redis mode=0755
+  sudo: yes

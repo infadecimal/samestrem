@@ -1,0 +1,12 @@
+---
+- name: Reload iptables
+  service: name=iptables-persistent state=restarted
+  sudo: yes
+
+- name: Reload haproxy
+  service: name=haproxy state=reloaded
+  sudo: yes
+
+- name: Reload nginx
+  service: name=nginx state=reloaded
+  sudo: yes

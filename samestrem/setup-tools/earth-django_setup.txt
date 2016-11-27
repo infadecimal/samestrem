@@ -1,0 +1,14 @@
+sudo chmod 755 deployment/keys
+sudo chmod 600 deployment/keys/*
+
+# touch ~/.ssh/config
+echo "Host default
+        HostName 192.168.111.222
+        User vagrant
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null" > ~/.ssh/config
+
+vagrant up
+
+vagrant ssh
+mysql -u root samestrem < /path/to/samestrem.sql

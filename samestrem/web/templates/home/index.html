@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block extrastyle %}
+    <link href="{% static "styles/home/index.less" %}" media="all" rel="stylesheet" type="text/less"/>
+{% endblock %}
+{% block content %}
+    <div id="main-menu">
+        <div class="quad" id="one">
+            <div class="quad-content">
+                <div class="quad-title">
+                    Code
+                </div>
+                <div class="quad-options">
+                    <div class="quad-list">
+                        <div class="quad-list-item bottom-up">AAA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="quad" id="two">
+            <div class="quad-content">
+                <div class="quad-title">
+                    Dance
+                </div>
+                <div class="quad-options">
+                    <div class="quad-list">
+                        <div class="quad-list-item bottom-up">BBB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="quad" id="three">
+            <div class="quad-content">
+                <div class="quad-title">
+                    About
+                </div>
+                <div class="quad-options">
+                    <div class="quad-list">
+                        <div class="quad-list-item top-down">CCC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="quad" id="four">
+            <div class="quad-content">
+                <div class="quad-title">
+                    Sam Estrem
+                </div>
+                <div class="quad-options">
+                    <div class="quad-list">
+                        <div class="quad-list-item top-down">DDD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block extrastyle %}
+    <link href="{% static "styles/home/test.less" %}" media="all" rel="stylesheet" type="text/less"/>
+{% endblock %}
+{% block content %}
+    <div id="main-menu">
+        <div class="quad" id="one">
+            <div class="quad-content">
+                <div class="quad-title">
+                    Code
+                </div>
+                <div class="quad-options">
+                    <div class="quad-list">
+                        <div class="quad-list-item">AAA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

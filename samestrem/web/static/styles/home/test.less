@@ -1,0 +1,55 @@
+@import "../variables.less";
+@menu_height: 400px;
+@menu_width: 400px;
+
+#main-menu {
+    margin: 0 auto;
+    height: @menu_height;
+    width: @menu_width;
+
+    .quad {
+        height: @menu_height;
+        width: @menu_width;
+        position: absolute;
+    }
+
+    .quad-content {
+        width: @menu_width/2;
+        height: @menu_height/2;
+        position: absolute;
+    }
+
+    .quad-title {
+        position: absolute;
+    }
+
+    .quad-options {
+        width: @menu_width;
+        height: @menu_height;
+        position: absolute;
+    }
+
+    .quad-list {
+        height: @menu_height;
+        width: @menu_width/2;
+        position: absolute;
+        vertical-align: middle;
+        .quad-list-item {
+            position: absolute;
+            padding: 20px;
+        }
+    }
+
+    #one .quad-content {
+        top: 0;
+        left: 0;
+        background-color: blue;
+        .quad-title, .quad-options {
+            top: 0;
+            left: 0;
+        }
+        .quad-list {
+            right:0;
+        }
+    }
+}

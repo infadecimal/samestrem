@@ -1,0 +1,94 @@
+Inside Vagrant
+
+samestrem
+sudo apt-get install python-virtualenv
+
+# To get Pillow to install
+sudo apt-get install libjpeg-dev
+sudo apt-get install gcc python-dev
+
+sudo su
+python setup.py build
+python setup.py install
+exit
+./bootstrap.sh
+
+
+
+
+
+
+
+Deploying Ansible
+vagrant up
+vagrant provision  # If errors
+cd deployment/
+ansible all -m ping -i dev
+sudo ansible-playbook -i dev -K initial_provision.yml
+
+mysql -u root samestrem < ../setup-tools/samestrem.sql
+
+# insert new superuser where password is "password"
+insert into auth_user (username, first_name, last_name, email, password, is_staff, is_active, is_superuser, last_login, date_joined) VALUES("estrems", "Sam", "Estrem", "sam@parthenonsoftware.com", "pbkdf2_sha256$10000$nbkKrQIApSfM$/1rnQ0Uy1YSmnAV547TsRYyKHrzuzyW7/Bn4zk5Z/Kg=", 1, 1, 1, NOW(), NOW());
+
+/etc/uwsgi/apps-enabled/samestrem.ini
+
+[uwsgi]
+plugins=python
+pythonpath=/srv/www/samestrem
+virtualenv=/srv/www/Envs/samestrem
+workers=8
+module=samestrem.wsgi:application
+master=True
+vacuum=True
+max-requests=5000
+daemonize=/tmp/samestrem.log
+socket=0.0.0.0:3031
+harakiri=300
+
+
+/etc/nginx/sites-enabled/samestrem.conf
+
+server {
+    listen 80;
+
+    server_name samestrem.vagrant.internal;
+
+
+
+    client_max_body_size 50m;
+
+    location /robots.txt {
+        root /srv/www/samestrem;
+    }
+
+    location /static {
+        alias /srv/www/samestrem/samestrem/static_collected;
+    }
+
+    location /static_collected {
+        root /srv/www/samestrem/samestrem;
+    }
+
+    location /media {
+        root /srv/www/samestrem/samestrem;
+    }
+
+    location ~ /static/newsletters {
+        rewrite ^/static(.*)$ https://manage.samestrem911.com/media$1 permanent;
+    }
+
+    location ~ "/admin-ajax/edit-this/(?:location|program)\/\w{6,8}\/" {
+         rewrite ^ http://search.samestrem911.com;
+    }
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        uwsgi_pass      unix://var/run/uwsgi/app/samestrem/socket;
+        include         uwsgi_params;
+        uwsgi_param     UWSGI_SCHEME $scheme;
+        uwsgi_param     SERVER_SOFTWARE    nginx/$nginx_version;
+        uwsgi_param     SCRIPT_NAME '';
+    }
+}

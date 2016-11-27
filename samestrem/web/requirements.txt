@@ -1,0 +1,39 @@
+# requirements.pip - Python library requirements for samestrem
+
+# commit test
+Django
+Markdown
+Pillow
+distribute
+django-debug-toolbar
+django-form-utils
+pytz
+simplejson
+wsgiref
+south
+pyScss
+django_compressor
+beautifulsoup
+tldextract
+flup
+django-extensions
+django-apptemplates
+django-braces
+six
+geocoder
+django-mandrill
+# may need to download memcached back-end to install python-memcached - apt-get memcached
+python-memcached
+nodeenv
+
+
+# MUST have mysql and mysql_config to install
+# apt-get install libmysqlclient-dev
+# On debian, default mysql_config will install at /usr/bin
+# You will then have to compile the MySQL-python ext
+# apt-get install python-setuptools python-dev libmysql++-dev build-essential
+MySQL-python
+# IF YOU ARE HAVING ISSUES INSTALLING THIS PACKAGE ON DEBIAN,
+# do sudo apt-get install python-mysqldb
+
+

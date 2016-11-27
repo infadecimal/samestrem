@@ -1,0 +1,128 @@
+@import "../variables.less";
+@menu_height: 400px;
+@menu_width: 400px;
+
+#main-menu {
+    margin: 0 auto;
+    height: @menu_height;
+    width: @menu_width;
+
+    .quad {
+        height: @menu_height;
+        width: @menu_width;
+        position: absolute;
+    }
+
+    .quad-content {
+        width: @menu_width/2;
+        height: @menu_height/2;
+        position: absolute;
+        z-index: 100;
+        overflow: hidden;
+        z-index: 5000;
+
+        &:hover {
+            z-index: 9999;
+            -webkit-transition: width .5s, height .5s;
+            transition: width .5s, height .5s;
+            width: @menu_width;
+            height: @menu_height;
+        }
+    }
+
+    .quad-title {
+        position: absolute;
+        width: @menu_width/2;
+        height: @menu_height/2;
+        text-align: center;
+        vertical-align: middle;
+        line-height: @menu_height/2;
+        font-size: xx-large;
+        color: white;
+    }
+
+    .quad-options {
+        width: @menu_width;
+        height: @menu_height;
+        position: absolute;
+    }
+
+    .quad-list {
+        height: @menu_height;
+        width: @menu_width/2;
+        position: absolute;
+        vertical-align: middle;
+        .quad-list-item {
+            position: absolute;
+            padding: 20px;
+
+            &.top-down {
+                top: 0;
+            }
+            &.bottom-up {
+                bottom: 0;
+            }
+        }
+    }
+
+    #one {
+        .quad-content {
+            background-image: url(@quadone);
+            background-size: @menu_width @menu_height;
+            top: 0;
+            left: 0;
+            .quad-title, .quad-options {
+                top: 0;
+                left: 0;
+            }
+            .quad-list {
+                right:0;
+            }
+        }
+    }
+    #two {
+        .quad-content{
+            background-image: url(@quadtwo);
+            background-size: @menu_width @menu_height;
+            top: 0;
+            right: 0;
+            .quad-title, .quad-options {
+                top: 0;
+                right: 0;
+            }
+            .quad-list {
+                left:0;
+            }
+        }
+    }
+    #three {
+        .quad-content{
+            background-image: url(@quadthree);
+            background-size: @menu_width @menu_height;
+            bottom: 0;
+            left: 0;
+            .quad-title, .quad-options {
+                bottom: 0;
+                left: 0;
+            }
+            .quad-list {
+                right:0;
+            }
+        }
+    }
+    #four {
+        .quad-content{
+            background-image: url(@quadfour);
+            background-size: @menu_width @menu_height;
+            bottom: 0;
+            right: 0;
+            .quad-title, .quad-options {
+                bottom: 0;
+                right: 0;
+            }
+            .quad-list {
+                left:0;
+            }
+        }
+    }
+}

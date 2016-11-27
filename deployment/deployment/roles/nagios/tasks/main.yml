@@ -1,0 +1,24 @@
+---
+- name: Install Nagios3
+  sudo: yes
+  apt: pkg=nagios3 state=present
+  tags:
+    - nagios
+
+- name: Remove Stock Configuration
+  sudo: yes
+  file: name=/etc/nagios3 state=absent
+  tags:
+    - nagios
+
+- name: Copy Configuration to Server
+  sudo: yes
+  copy: src=nagios3 dest=/etc/ owner=root
+  tags:
+    - nagios
+
+- name: Restart Nagios
+  sudo: yes
+  service: name=nagios3 state=restarted
+  tags:
+    - nagios

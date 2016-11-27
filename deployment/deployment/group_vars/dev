@@ -1,0 +1,58 @@
+debug: True
+is_vagrant: True
+
+app_user: vagrant
+app_log_dir: /var/log/samestrem-log
+socket_dir: /var/run/samestrem-sockets
+
+samestrem:
+  app_name: samestrem
+  hostname: samestrem.vagrant.internal
+  virtualenv: /srv/www/Envs/samestrem
+  install_dir: /srv/www/samestrem
+  logfile: "{{app_log_dir}}/samestrem.log"
+  socket: "{{socket_dir}}/app-socket"
+  local_settings_file: /srv/www/samestrem/web/local_settings.py
+  requirements_file: /srv/www/samestrem/web/requirements.txt
+  source_dir: "../../samestrem/web"
+  db:
+    default:
+      host: localhost
+      port: 3306
+      name: samestrem
+      user: samestrem
+      password: samestrem
+
+admins:
+  - login: sestrem
+    name: Sam Estrem
+    password: $6$yvKCk99U$7NzBo/amK9TfrlHvqxneBlFyAzChHFhYKgfltn1fmK/bAR2e8wSLcOjrcVTENP54ZEn8W7EShlTbFP8xeft441
+
+admin_keys:
+  - user: sestrem
+    key: sestrem.pub 
+  - user: vagrant
+    key: vagrant.key.pub
+
+global_packages:
+  - rsync
+  - syslog-ng-core
+  - syslog-ng
+  - screen
+  - strace
+  - tcpdump
+  - telnet
+  - vim
+  - iptables-persistent
+  - ssmtp
+  - nagios-nrpe-server
+  - nagios-plugins
+  - libnagios-plugin-perl
+  - liblwp-useragent-determined-perl
+  - libredis-perl
+  - ipmitool
+  - ntp
+
+memcache:
+  host: localhost
+  port: 11211

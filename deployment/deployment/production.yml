@@ -1,6 +1,28 @@
-- name: Install a full environment
-  hosts: samestrem-server
+- name: Install App DB Servers
+  hosts: app-db-servers
   roles:
     - all
+    - production-tuning
     - app-db
-    - api
+
+- name: Install Application Servers
+  hosts: app-servers
+  roles:
+    - all
+    - production-tuning
+    - app
+
+- name: Install Load Balancers
+  hosts: lb-servers
+  roles:
+    - all
+    - production-tuning
+    - lb
+
+- name: Install Nagios Server
+  hosts: nagios
+  roles: 
+    - all
+    - production-tuning
+    - nagios
+

@@ -1,0 +1,40 @@
+div#container {
+  width: 100%;
+}
+div#body-content {
+  width: 800px;
+  margin: 0 auto;
+}
+
+#main_menu {
+  margin: 100px;
+  height: 400px;
+  width: 400px;
+  border-radius: 25px;
+  text-align: center;
+}
+#main_menu span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+#main_menu #one {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+#main_menu #two {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+#main_menu #three {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+#main_menu #four {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}

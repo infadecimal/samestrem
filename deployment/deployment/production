@@ -1,8 +1,23 @@
 [localhost]
 localhost ansible_connection=local
 
-[samestrem-server]
-76.74.178.225 internal_ip=127.0.0.1
+[app-servers]
+questlocation1 internal_ip=76.74.178.225
+
+[app-db-servers]
+questdb1_new server_id=1 internal_ip=76.74.178.225
+
+[lb-servers]
+questlb1 internal_ip=76.74.178.225
+
+[nagios]
+questmonitor1 internal_ip=76.74.178.225
 
 [production:children]
-samestrem-servers
+app-db-servers
+stats-db-servers
+web-servers
+api-servers
+app-servers
+lb-servers
+nagios

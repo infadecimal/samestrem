@@ -1,0 +1,13 @@
+---
+- name: Update SSH config
+  template: src=sshd_config dest=/etc/ssh/sshd_config
+  sudo: yes
+
+- name: Set ulimits
+  template: src=limits.conf dest=/etc/security/limits.conf
+  sudo: yes
+
+- name: Set sysctl
+  template: src=sysctl.conf dest=/etc/sysctl.conf
+  sudo: yes
+

@@ -1,4 +1,6 @@
 /deployment
 /.git
-/testing
 *.pyc
+/web/local_settings.py
+/static_collected
+/media
